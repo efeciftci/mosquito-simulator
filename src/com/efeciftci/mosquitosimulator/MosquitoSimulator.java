@@ -36,11 +36,18 @@ public class MosquitoSimulator {
 		Random r = new Random();
 
 		StdDraw.setCanvasSize(300, 300);
-		StdDraw.setPenRadius(0.05);
-		StdDraw.setPenColor(StdDraw.BLUE);
 
 		while (true) {
-			StdDraw.clear();
+			StdDraw.clear(); // clear screen on every loop iteration
+
+			/*
+			 * the following 4 if conditions cause the mosquito to turn back if
+			 * it either hits the window boundary, or if a random event occurs
+			 * by 0.04% chance. when the mosquito changes direction, a new
+			 * directional speed is determined and stored in fx and fy
+			 * variables. these if's also set the proper mosquito image
+			 * according to the direction it is facing
+			 */
 			if (x >= 1 || r.nextInt(100) < 4) {
 				dx = XDir.left;
 				mf = "ml.jpg";
@@ -59,6 +66,11 @@ public class MosquitoSimulator {
 				dy = YDir.bottom;
 				fy = 0.01 * r.nextInt(5);
 			}
+
+			/*
+			 * the following if's determine the next x and y coordinates of the
+			 * mosquito with added "shakiness"
+			 */
 			if (dx == XDir.left)
 				x = x - (fx + 0.01 * r.nextInt(5) * (r.nextBoolean() ? 1 : -1));
 			if (dx == XDir.right)
@@ -67,8 +79,11 @@ public class MosquitoSimulator {
 				y = y - (fy + 0.01 * r.nextInt(5) * (r.nextBoolean() ? 1 : -1));
 			if (dy == YDir.bottom)
 				y = y + (fy + 0.01 * r.nextInt(5) * (r.nextBoolean() ? 1 : -1));
-			StdDraw.picture(x, y, mf);
-			Thread.sleep(50);
+
+			StdDraw.picture(x, y, mf); // display the mosquito in its new
+										// position
+
+			Thread.sleep(50); // sleep for 50msecs
 		}
 	}
 }
